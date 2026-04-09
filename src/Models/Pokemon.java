@@ -1,6 +1,7 @@
 package Models;
 
 import utils.Type;
+import utils.StatusEffect;
 
 public abstract class Pokemon {
     // Atribut yang digunakan
@@ -9,6 +10,7 @@ public abstract class Pokemon {
     protected int attack;
     protected int defense;
     protected Type type;
+    private StatusEffect status = StatusEffect.NONE;
 
     //constructor
     public Pokemon(String name, int hp, int attack, int defense, Type type){
@@ -18,6 +20,7 @@ public abstract class Pokemon {
         this.defense = defense;
         this.type = type;
     }
+    
 
     // Method abstract
     public abstract void attack(Pokemon enemy);
@@ -70,4 +73,13 @@ public abstract class Pokemon {
     public void heal(int amount) {
         this.hp += amount;
     }
+
+    public StatusEffect getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEffect status) {
+        this.status = status;
+    }
+
 }
