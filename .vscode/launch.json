@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PokemonbattleApplication<pokemonbattle>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.pokemon.pokemonbattle.PokemonbattleApplication",
+            "projectName": "pokemonbattle",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

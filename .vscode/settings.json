@@ -1,5 +1,13 @@
 {
   "java.project.referencedLibraries": [
     "lib/**/*.jar"
-  ]
+  ],
+
+  "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "C:\\Program Files\\Java\\jdk-21", // Sesuaikan dengan folder installasi Java 21 di PC-mu
+            "default": true
+        }
+    ]
 }

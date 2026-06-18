@@ -329,24 +329,53 @@ async function switchPokemonBattle() {
   }
 }
 
+async function useItemFromBattle(itemIndex) {
+    toggleBattleInventory(false);
+    
+    const itemResult = await makeRequest(`/battle/use-item?itemIndex=${itemIndex}`, { method: 'POST' });
+    
+    if (itemResult) {
+        currentBattleState = itemResult.battleState;
+        renderBattleLog(itemResult.message);
+        
+        renderBattleArena();  
+        const itemIdx = INVENTORY.findIndex(i => i.index === itemIndex);
+        if (itemIdx !== -1 && INVENTORY[itemIdx].amount > 0) {
+            INVENTORY[itemIdx].amount--;
+        }
+        
+        await renderBattleSkills();
+    }
+}
+
+function toggleBattleInventory(show) {
+    const modal = document.getElementById('battle-inventory-modal');
+    if (modal) {
+        modal.style.display = show ? 'flex' : 'none';
+    }
+}
+
 // ===== USE ITEM IN BATTLE =====
-async function openItemMenu() {
-  const items = INVENTORY.filter(item => item.amount > 0);
-  
-  if (items.length === 0) {
-    renderBattleLog('No items available!');
-    return;
-  }
-  
-  // Use first available item
-  const itemResult = await makeRequest(`/battle/use-item?itemIndex=${items[0].index}`, { method: 'POST' });
-  
-  if (itemResult) {
-    currentBattleState = itemResult.battleState;
-    renderBattleLog(itemResult.message);
-    renderBattleArena();
-    await renderBattleSkills();
-  }
+function openItemMenu() {
+    const items = INVENTORY.filter(item => item.amount > 0);
+    
+    if (items.length === 0) {
+        renderBattleLog('No items available!');
+        return;
+    }
+    
+    const modalList = document.querySelector('.battle-inventory-list');
+    if (modalList) {
+        modalList.innerHTML = items.map(item => `
+            <div class="item-option" onclick="useItemFromBattle(${item.index})" style="background: #252538; padding: 10px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div>${item.icon} <strong>${item.name}</strong><br><small style="color: #a6adc8;">${item.description}</small></div>
+                <span style="background: #fab387; color: #11111b; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold;">x${item.amount}</span>
+            </div>
+        `).join('');
+    }
+
+    // 3. Tampilkan modal popup-nya
+    toggleBattleInventory(true);
 }
 
 // ===== CAPTURE POKEMON =====
